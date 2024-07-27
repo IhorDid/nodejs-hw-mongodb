@@ -13,16 +13,11 @@ const setupServer = () => {
   app.use(
     pino({
       transport: {
-        target: 'pino-http',
+        target: 'pino-pretty',
       },
     }),
   );
   app.use(express.json());
-  app.use((req, res, next) => {
-    res.status(404).json({
-      message: 'Not found',
-    });
-  });
 
   app.get('/contacts', async (req, res) => {
     const contacts = await getAllContacts();
@@ -45,6 +40,11 @@ const setupServer = () => {
         message: 'Contact  not found',
       });
     }
+  });
+  app.use((req, res, next) => {
+    res.status(404).json({
+      message: 'Not found',
+    });
   });
 
   app.listen(PORT, () => {
