@@ -31,5 +31,5 @@ const constactsSchema = new Schema(
   },
 );
 
-const ContactsCollection = model('constacts', constactsSchema);
+const ContactsCollection = model('contacts', constactsSchema);
 export { ContactsCollection };
