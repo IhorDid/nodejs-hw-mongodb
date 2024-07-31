@@ -40,6 +40,7 @@ const setupServer = () => {
       res.status(404).json({
         message: 'Contact not found',
       });
+      return;
     }
   });
   app.use((req, res, next) => {
