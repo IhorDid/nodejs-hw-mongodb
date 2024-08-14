@@ -31,16 +31,16 @@ const setupServer = () => {
   app.get('/contacts/:contactId', async (req, res, next) => {
     const { contactId } = req.params;
     const contact = await getContactsById(contactId);
-    res.json({
-      message: `Successfully found contact with id ${contactId}!`,
-      data: contact,
-    });
-
     if (!contact) {
       return res.status(404).json({
         message: 'Contact not found',
       });
     }
+    l;
+    res.json({
+      message: `Successfully found contact with id ${contactId}!`,
+      data: contact,
+    });
   });
   app.use((req, res, next) => {
     res.status(404).json({
