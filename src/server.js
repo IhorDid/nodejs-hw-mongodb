@@ -36,7 +36,6 @@ const setupServer = () => {
         message: 'Contact not found',
       });
     }
-    l;
     res.json({
       message: `Successfully found contact with id ${contactId}!`,
       data: contact,
