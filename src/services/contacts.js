@@ -1,7 +1,13 @@
+import { SORT_ORDER } from '../constants/index.js';
 import { ContactsCollection } from '../db/models/contacts.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
-const getAllContacts = async ({ page = 1, perPage = 10 }) => {
+const getAllContacts = async ({
+  page = 1,
+  perPage = 10,
+  sortOrder = SORT_ORDER,
+  sortBy = '_id',
+}) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
   const contactsQuery = await ContactsCollection.find();
@@ -17,6 +23,7 @@ const getAllContacts = async ({ page = 1, perPage = 10 }) => {
   const contacts = await ContactsCollection.find()
     .skip(skip)
     .limit(limit)
+    .sort({ [sortBy]: sortOrder })
     .exec();
 
   const paginationData = calculatePaginationData(contactsCount, perPage, page);
