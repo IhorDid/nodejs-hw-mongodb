@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 const sessionSchema = new Schema(
   {
     userId: {
-      type: String,
+      type: Schema.ObjectId,
       require: true,
     },
     accessToken: {
@@ -29,5 +29,5 @@ const sessionSchema = new Schema(
   },
 );
 
-const Session = model('session', sessionSchema);
+const Session = model('sessions', sessionSchema);
 export { Session };
