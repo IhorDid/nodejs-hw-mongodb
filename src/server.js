@@ -2,10 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import dotenv from 'dotenv';
-import { contactsRouter } from './routers/contacts.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-
+import { rootRoute } from './routers/index.js';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 const PORT = Number(process.env.PORT);
 
@@ -20,8 +20,8 @@ const setupServer = () => {
     }),
   );
   app.use(express.json());
-
-  app.use(contactsRouter);
+  app.use(cookieParser());
+  app.use(rootRoute);
   app.use(errorHandler);
   app.use('*', notFoundHandler);
 
