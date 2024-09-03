@@ -15,7 +15,9 @@ const getAllContacts = async ({
   // const contactsCount = await ContactsCollection.find()
   //   .merge(contactsQuery)
   //   .countDocuments();
-  const contactsCount = await ContactsCollection.countDocuments().exec();
+  const contactsCount = await ContactsCollection.countDocuments({
+    userId,
+  }).exec();
   // const contacts = await ContactsCollection.find()
   //   .merge(contactsQuery)
   //   .skip(skip)
