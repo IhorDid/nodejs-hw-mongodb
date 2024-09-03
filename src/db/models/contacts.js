@@ -24,7 +24,8 @@ const constactsSchema = new Schema(
       require: true,
       default: 'personal',
     },
-    userId: { type: Schema.Types.ObjectId, ref: 'users', required: true },
+
+    userId: { type: Schema.Types.ObjectId, required: true },
   },
   {
     timestamps: true,
