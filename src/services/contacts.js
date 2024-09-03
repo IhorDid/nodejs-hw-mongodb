@@ -5,7 +5,7 @@ import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 const getAllContacts = async ({
   page = 1,
   perPage = 10,
-  sortOrder = SORT_ORDER,
+  sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
   userId,
 }) => {
