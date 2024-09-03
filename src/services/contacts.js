@@ -41,8 +41,8 @@ const getContactsById = async (contactId, userId) => {
   const contact = await ContactsCollection.findOne({ _id: contactId, userId });
   return contact;
 };
-const createContact = async (payload) => {
-  const contact = await ContactsCollection.create(payload);
+const createContact = async (payload, userId) => {
+  const contact = await ContactsCollection.create({ ...payload, userId });
   return contact;
 };
 const upsertContact = async (contactId, payload, userId) => {
