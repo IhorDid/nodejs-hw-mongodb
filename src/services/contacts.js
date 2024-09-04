@@ -1,6 +1,7 @@
 import { SORT_ORDER } from '../constants/index.js';
 import { ContactsCollection } from '../db/models/contacts.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { saveFile } from '../utils/saveFile.js';
 import { saveFileToLocalMachine } from '../utils/saveFileToLocalMachine.js';
 
 const getAllContacts = async ({
@@ -37,7 +38,7 @@ const getContactsById = async (contactId, userId) => {
   return contact;
 };
 const createContact = async ({ photo, ...payload }, userId) => {
-  const url = await saveFileToLocalMachine(photo);
+  const url = await saveFile(photo);
 
   const contact = await ContactsCollection.create({
     ...payload,
@@ -47,12 +48,10 @@ const createContact = async ({ photo, ...payload }, userId) => {
   return contact;
 };
 const upsertContact = async (contactId, { photo, ...payload }, userId) => {
-  
-
   let updateContact = { ...payload };
 
   if (photo) {
-    const url = await saveFileToLocalMachine(photo);
+    const url = await saveFile(photo);
     updateContact.photo = url;
   }
 

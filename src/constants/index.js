@@ -19,6 +19,12 @@ const SMTP = {
 const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
 const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
+const CLOUDINARY = {
+  CLOUD_NAME: 'CLOUD_NAME',
+  API_KEY: 'API_KEY',
+  API_SECRET: 'API_SECRET',
+};
+
 export {
   SORT_ORDER,
   FIFTEEN_MINUTES,
@@ -26,4 +32,5 @@ export {
   SMTP,
   TEMP_UPLOAD_DIR,
   UPLOAD_DIR,
+  CLOUDINARY,
 };
