@@ -2,8 +2,11 @@ import { User } from '../db/models/user.js';
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
 import { Session } from '../db/models/session.js';
-import { FIFTEEN_MINUTES, THIRTY_DAY } from '../constants/index.js';
+import { FIFTEEN_MINUTES, SMTP, THIRTY_DAY } from '../constants/index.js';
+import { env } from '../utils/env.js';
+import { sendEmail } from '../utils/sendMail.js';
 
 const createUser = async (payload) => {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
@@ -77,4 +80,74 @@ const refreshSession = async ({ sessionId, refreshToken }) => {
   });
 };
 
-export { createUser, logUser, outUser, refreshSession };
+const requestResetToken = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+  const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    env('JWT_SECRET'),
+    {
+      expiresIn: '5m',
+    },
+  );
+
+  try {
+    await sendEmail({
+      from: env(SMTP.SMTP_FROM),
+      to: email,
+      subject: 'Reset your password',
+      html: `<p>Click <a href="${env(
+        'APP_DOMAIN',
+      )}/reset-password?token=${resetToken}">here</a> to reset your password!</p>`,
+    });
+  } catch (error) {
+    console.log('err--->', error);
+    throw createHttpError(
+      500,
+      'Failed to send the email, please try again later.',
+    );
+  }
+};
+
+const resetPassword = async (payload) => {
+  let entries;
+
+  try {
+    entries = jwt.verify(payload.token, env('JWT_SECRET'));
+  } catch (err) {
+    if (err instanceof Error)
+      throw createHttpError(401, 'Token is expired or invalid');
+    throw err;
+  }
+
+  const user = await User.findOne({
+    email: entries.email,
+    _id: entries.sub,
+  });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+  await User.updateOne(
+    { email: entries.email, _id: entries.sub },
+    { password: encryptedPassword },
+  );
+  await Session.deleteOne({ userId: user._id });
+};
+
+export {
+  createUser,
+  logUser,
+  outUser,
+  refreshSession,
+  requestResetToken,
+  resetPassword,
+};
