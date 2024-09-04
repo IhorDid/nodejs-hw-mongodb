@@ -3,6 +3,7 @@ import { saveFileToCloudinary } from './saveFileToCloudinary.js';
 import { saveFileToLocalMachine } from './saveFileToLocalMachine.js';
 
 const saveFile = async (file) => {
+  if (!file) return;
   let url;
 
   if (env('IS_CLOUDINARY_ENABLED') === 'true') {
