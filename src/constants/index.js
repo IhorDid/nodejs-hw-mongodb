@@ -25,6 +25,8 @@ const CLOUDINARY = {
   API_SECRET: 'API_SECRET',
 };
 
+const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
+
 export {
   SORT_ORDER,
   FIFTEEN_MINUTES,
@@ -33,4 +35,5 @@ export {
   TEMP_UPLOAD_DIR,
   UPLOAD_DIR,
   CLOUDINARY,
+  SWAGGER_PATH,
 };
