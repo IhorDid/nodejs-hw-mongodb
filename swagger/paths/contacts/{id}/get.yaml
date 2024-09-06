@@ -1,4 +1,5 @@
-tags: -Conatcts
+tags:
+  - Conatcts
 summary: Get contacts by id
 operationId: getContact
 description: 'Get contact by id'
@@ -37,4 +38,4 @@ responses:
   '401':
     $ref: ..\..\..\components\responses\401.yaml
   '500':
-    $ref: ..\..\..\components\responses\409.yaml
+    $ref: ..\..\..\components\responses\500.yaml
